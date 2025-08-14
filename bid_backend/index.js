@@ -90,27 +90,26 @@ app.post('/register', async (req, res) => {
             role,
             emailVerificationToken: verificationToken,
             emailVerificationExpires: verificationExpires,
-            isEmailVerified: false
+            isEmailVerified: true  // Auto-verify users upon registration
         });
 
         console.log('✅ User created:', newUser._id);
 
-        // Send real verification email
-        const { sendVerificationEmail } = require('./services/emailService');
-        const emailResult = await sendVerificationEmail(email, verificationToken, fullname);
+        // Send welcome email (no verification needed)
+        const { sendWelcomeEmail } = require('./services/emailService');
+        const emailResult = await sendWelcomeEmail(email, fullname);
 
         if (emailResult.success) {
-            res.status(201).json({
-                message: "Registration successful! Please check your email to verify your account.",
-                userId: newUser._id
-            });
+            console.log('✅ Welcome email sent successfully');
         } else {
-            console.error('❌ Failed to send verification email:', emailResult.error);
-            res.status(201).json({
-                message: "Registration successful, but there was an issue sending the verification email. Please contact support.",
-                userId: newUser._id
-            });
+            console.error('❌ Failed to send welcome email:', emailResult.error);
         }
+
+        // Always return success since user is auto-verified
+        res.status(201).json({
+            message: "Registration successful! Welcome to Palm Island Football Academy. You can now login to your account.",
+            userId: newUser._id
+        });
 
     } catch (error) {
         console.error('❌ Registration error:', error);
@@ -179,12 +178,7 @@ app.post('/login', async (req, res) => {
             return res.status(401).json({ message: "Invalid email or password" });
         }
 
-        if (!user.isEmailVerified) {
-            return res.status(401).json({
-                message: "Please verify your email before logging in",
-                emailVerified: false
-            });
-        }
+        // Email verification check removed - users are auto-verified upon registration
 
         const isPasswordValid = await bcrypt.compare(password, user.password);
 
@@ -224,30 +218,18 @@ app.post('/resend-verification', async (req, res) => {
             return res.status(404).json({ message: "User not found" });
         }
 
-        if (user.isEmailVerified) {
-            return res.status(400).json({ message: "Email is already verified" });
-        }
-
-        // Generate new verification token
-        const verificationToken = crypto.randomBytes(32).toString('hex');
-        const verificationExpires = new Date(Date.now() + 24 * 60 * 60 * 1000);
-
-        user.emailVerificationToken = verificationToken;
-        user.emailVerificationExpires = verificationExpires;
-        await user.save();
-
-        // Send real verification email
-        const { sendVerificationEmail } = require('./services/emailService');
-        const emailResult = await sendVerificationEmail(email, verificationToken, user.fullname);
+        // All users are now auto-verified, so just send a welcome email
+        const { sendWelcomeEmail } = require('./services/emailService');
+        const emailResult = await sendWelcomeEmail(email, user.fullname);
 
         if (emailResult.success) {
             res.status(200).json({
-                message: "Verification email sent successfully! Please check your email."
+                message: "Welcome email sent successfully! Your account is already active."
             });
         } else {
-            console.error('❌ Failed to resend verification email:', emailResult.error);
+            console.error('❌ Failed to send welcome email:', emailResult.error);
             res.status(500).json({
-                message: "Failed to send verification email. Please try again later."
+                message: "Failed to send welcome email. Please try again later."
             });
         }
 

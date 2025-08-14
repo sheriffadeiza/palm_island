@@ -112,7 +112,7 @@ const sendWelcomeEmail = async (email, fullname) => {
         const mailOptions = {
             from: `"Palm Island Football Academy" <${process.env.EMAIL_USER}>`,
             to: email,
-            subject: '🎉 Welcome to Palm Island Football Academy - Email Verified!',
+            subject: '🎉 Congratulations! Welcome to Palm Island Football Academy',
             html: `
                 <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
                     <div style="text-align: center; margin-bottom: 30px;">
@@ -122,7 +122,7 @@ const sendWelcomeEmail = async (email, fullname) => {
 
                     <div style="background-color: #ecfdf5; padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #059669;">
                         <p style="color: #065f46; font-size: 16px; line-height: 1.6; margin: 0;">
-                            <strong>Congratulations!</strong> Your email has been successfully verified and your account is now active.
+                            <strong>Congratulations!</strong> Your registration was successful and your account is now active. You can start using all our features immediately!
                         </p>
                     </div>
 
