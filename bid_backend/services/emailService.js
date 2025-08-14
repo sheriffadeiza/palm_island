@@ -8,9 +8,11 @@ const createTransporter = async () => {
     if (process.env.EMAIL_PASS && process.env.EMAIL_PASS !== '"#Rachael"' && process.env.EMAIL_PASS.length >= 16) {
         console.log('📧 Using Gmail SMTP...');
         return nodemailer.createTransport({
+            host: process.env.EMAIL_HOST,
             service: 'gmail',
+            secure: false,
             auth: {
-                user: process.env.EMAIL_USER,
+                user:process.env.EMAIL_USER,
                 pass: process.env.EMAIL_PASS
             }
         });
@@ -22,7 +24,7 @@ const createTransporter = async () => {
             console.log('✅ Test email account created:', testAccount.user);
 
             return nodemailer.createTransport({
-                host: 'smtp.ethereal.email',
+                host: process.env.EMAIL_HOST,
                 port: 587,
                 secure: false,
                 auth: {
@@ -46,7 +48,7 @@ const sendVerificationEmail = async (email, verificationToken, fullname) => {
         const mailOptions = {
             from: `"Palm Island Football Academy" <${process.env.EMAIL_USER}>`,
             to: email,
-            subject: 'Email Verification - Palm Island Football Academy',
+            subject: 'Registration Confirmation from Palm Island Football Academy',
             html: `
                 <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
                     <div style="text-align: center; margin-bottom: 30px;">
@@ -56,29 +58,7 @@ const sendVerificationEmail = async (email, verificationToken, fullname) => {
 
                     <div style="background-color: #f8fafc; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
                         <p style="color: #374151; font-size: 16px; line-height: 1.6;">
-                            Thank you for registering with Palm Island Football Academy! To complete your registration and access your account, please verify your email address.
-                        </p>
-                    </div>
-
-                    <div style="text-align: center; margin: 30px 0;">
-                        <a href="${verificationUrl}"
-                           style="background-color: #2563eb; color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; display: inline-block; font-weight: bold; font-size: 16px;">
-                            ✅ Verify Email Address
-                        </a>
-                    </div>
-
-                    <div style="background-color: #fef3c7; padding: 15px; border-radius: 8px; margin: 20px 0;">
-                        <p style="color: #92400e; margin: 0; font-size: 14px;">
-                            <strong>⏰ Important:</strong> This verification link will expire in 24 hours for security reasons.
-                        </p>
-                    </div>
-
-                    <div style="margin: 20px 0;">
-                        <p style="color: #6b7280; font-size: 14px;">
-                            If the button doesn't work, copy and paste this link into your browser:
-                        </p>
-                        <p style="word-break: break-all; color: #2563eb; font-size: 14px; background-color: #f1f5f9; padding: 10px; border-radius: 4px;">
-                            ${verificationUrl}
+                           Thank you for joining Palm Island Football Academy!
                         </p>
                     </div>
 
