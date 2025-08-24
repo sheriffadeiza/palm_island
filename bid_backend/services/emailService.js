@@ -43,7 +43,7 @@ const createTransporter = async () => {
 const sendVerificationEmail = async (email, verificationToken, fullname) => {
     try {
         const transporter = await createTransporter();
-        const verificationUrl = `${process.env.FRONTEND_URL || 'http://localhost:3000'}/verify-email?token=${verificationToken}`;
+        const verificationUrl = `${process.env.FRONTEND_URL || 'http://localhost:5173'}/verify-email?token=${verificationToken}`;
 
         const mailOptions = {
             from: `"Palm Island Football Academy" <${process.env.EMAIL_USER}>`,
@@ -127,7 +127,7 @@ const sendWelcomeEmail = async (email, fullname) => {
                     </div>
 
                     <div style="text-align: center; margin: 30px 0;">
-                        <a href="${process.env.FRONTEND_URL || 'http://localhost:3000'}/login"
+                        <a href="${process.env.FRONTEND_URL || 'http://localhost:5173'}/login"
                            style="background-color: #059669; color: white; padding: 15px 30px; text-decoration: none; border-radius: 8px; display: inline-block; font-weight: bold; font-size: 16px;">
                             🔐 Login to Your Account
                         </a>

@@ -65,10 +65,14 @@ const connectDB = async () => {
 };
 
 const app = express();
+
+
 app.use(cors({
-  origin: ['https://project-kt2ijrzcf-sheriffadeizas-projects.vercel.app', 'http://localhost:3000'], // add your deployed frontend URL here
+  origin: ["http://localhost:5173", "https://project-kt2ijrzcf-sheriffadeizas-projects.vercel.app"], // frontend URLs
+  methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));
+
 app.use(json(""));
 
 // Registration endpoint
