@@ -1,5 +1,5 @@
 const { User } = require("../model/user.model")
-const { sendVerificationEmail, sendWelcomeEmail } = require("../services/emailService")
+const { sendVerificationEmail, sendWelcomeEmail } = require("../services/emailService").default
 const crypto = require('crypto')
 const bcrypt = require('bcryptjs')
 

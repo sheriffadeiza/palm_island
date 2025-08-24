@@ -1,6 +1,6 @@
-const mongoose = require("mongoose");
+import { Schema, model } from "mongoose";
 
-const TrainingSessionSchema = mongoose.Schema({
+const TrainingSessionSchema = Schema({
     title: {
         type: String,
         required: true,
@@ -45,7 +45,7 @@ const TrainingSessionSchema = mongoose.Schema({
     },
     participants: [{
         playerId: {
-            type: mongoose.Schema.Types.ObjectId,
+            type: Schema.Types.ObjectId,
             ref: 'Players'
         },
         attended: {
@@ -78,7 +78,7 @@ const TrainingSessionSchema = mongoose.Schema({
         default: ''
     },
     coachId: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: 'Users',
         required: true
     },
@@ -105,4 +105,4 @@ const TrainingSessionSchema = mongoose.Schema({
     timestamps: true
 });
 
-module.exports.TrainingSession = mongoose.model("TrainingSessions", TrainingSessionSchema);
+export const TrainingSession = model("TrainingSessions", TrainingSessionSchema);

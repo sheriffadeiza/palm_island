@@ -1,14 +1,14 @@
-const express = require('express');
-const cors = require('cors');
-const dotenv = require('dotenv');
-const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
-const crypto = require('crypto');
+import express, { json } from 'express';
+import cors from 'cors';
+import { config } from 'dotenv';
+import { Schema, model, connect } from 'mongoose';
+import { hash, compare } from 'bcryptjs';
+import { randomBytes } from 'crypto';
 
-dotenv.config();
+config();
 
 // User Schema
-const UserSchema = mongoose.Schema({
+const UserSchema = Schema({
     fullname: {
         type: String,
         required: true,
@@ -44,19 +44,19 @@ const UserSchema = mongoose.Schema({
     timestamps: true
 });
 
-const User = mongoose.model("Users", UserSchema);
+const User = model("Users", UserSchema);
 
 // Player Schema
-const { Player } = require('./model/player.model');
+import { Player } from './model/player.model.js'; 
 
 // Training and Match Schemas
-const { TrainingSession } = require('./model/training.model');
-const { Match } = require('./model/match.model');
+import { TrainingSession } from './model/training.model.js';
+import { Match } from './model/match.model.js';
 
 // Connect to MongoDB
 const connectDB = async () => {
     try {
-        await mongoose.connect(process.env.MONGO_URI);
+        await connect(process.env.MONGO_URI);
         console.log('✅ MongoDB connected successfully');
     } catch (err) {
         console.error('❌ MongoDB connection failed:', err.message);
@@ -66,10 +66,10 @@ const connectDB = async () => {
 
 const app = express();
 app.use(cors({
-  origin: ['https://project-neon-rho.vercel.app', 'http://localhost:3000'], // add your deployed frontend URL here
+  origin: ['https://project-kt2ijrzcf-sheriffadeizas-projects.vercel.app', 'http://localhost:3000'], // add your deployed frontend URL here
   credentials: true
 }));
-app.use(express.json());
+app.use(json(""));
 
 // Registration endpoint
 app.post('/register', async (req, res) => {
@@ -88,9 +88,9 @@ app.post('/register', async (req, res) => {
         }
 
         const saltRounds = 10;
-        const hashedPassword = await bcrypt.hash(password, saltRounds);
+        const hashedPassword = await hash(password, saltRounds);
 
-        const verificationToken = crypto.randomBytes(32).toString('hex');
+        const verificationToken = randomBytes(32).toString('hex');
         const verificationExpires = new Date(Date.now() + 24 * 60 * 60 * 1000);
 
         const newUser = await User.create({
@@ -106,7 +106,7 @@ app.post('/register', async (req, res) => {
         console.log('✅ User created:', newUser._id);
 
         // Send welcome email (no verification needed)
-        const { sendWelcomeEmail } = require('./services/emailService');
+        const { sendWelcomeEmail } = require('./services/emailService').default;
         const emailResult = await sendWelcomeEmail(email, fullname);
 
         if (emailResult.success) {
@@ -153,7 +153,7 @@ app.get('/verify-email', async (req, res) => {
         console.log('🎉 Email verified for user:', user.email);
 
         // Send welcome email
-        const { sendWelcomeEmail } = require('./services/emailService');
+        const { sendWelcomeEmail } = require('./services/emailService').default;
         const welcomeResult = await sendWelcomeEmail(user.email, user.fullname);
 
         if (welcomeResult.success) {
@@ -190,7 +190,7 @@ app.post('/login', async (req, res) => {
 
         // Email verification check removed - users are auto-verified upon registration
 
-        const isPasswordValid = await bcrypt.compare(password, user.password);
+        const isPasswordValid = await compare(password, user.password);
 
         if (!isPasswordValid) {
             return res.status(401).json({ message: "Invalid email or password" });
@@ -229,7 +229,7 @@ app.post('/resend-verification', async (req, res) => {
         }
 
         // All users are now auto-verified, so just send a welcome email
-        const { sendWelcomeEmail } = require('./services/emailService');
+        const { sendWelcomeEmail } = require('./services/emailService').default;
         const emailResult = await sendWelcomeEmail(email, user.fullname);
 
         if (emailResult.success) {

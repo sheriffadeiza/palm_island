@@ -1,6 +1,6 @@
-const mongoose = require("mongoose");
+import { Schema, model } from "mongoose";
 
-const MatchSchema = mongoose.Schema({
+const MatchSchema = Schema({
     title: {
         type: String,
         required: true,
@@ -58,7 +58,7 @@ const MatchSchema = mongoose.Schema({
     },
     squad: [{
         playerId: {
-            type: mongoose.Schema.Types.ObjectId,
+            type: Schema.Types.ObjectId,
             ref: 'Players'
         },
         position: {
@@ -114,7 +114,7 @@ const MatchSchema = mongoose.Schema({
             enum: ['Goal', 'Assist', 'Yellow Card', 'Red Card', 'Substitution', 'Injury']
         },
         playerId: {
-            type: mongoose.Schema.Types.ObjectId,
+            type: Schema.Types.ObjectId,
             ref: 'Players'
         },
         minute: {
@@ -138,7 +138,7 @@ const MatchSchema = mongoose.Schema({
         default: 'Medium'
     },
     coachId: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: 'Users',
         required: true
     },
@@ -152,7 +152,7 @@ const MatchSchema = mongoose.Schema({
             default: ''
         },
         keyPlayers: [{
-            type: mongoose.Schema.Types.ObjectId,
+            type: Schema.Types.ObjectId,
             ref: 'Players'
         }],
         weaknesses: {
@@ -178,4 +178,4 @@ const MatchSchema = mongoose.Schema({
     timestamps: true
 });
 
-module.exports.Match = mongoose.model("Matches", MatchSchema);
+export const Match = model("Matches", MatchSchema);

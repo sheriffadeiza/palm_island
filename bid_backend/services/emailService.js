@@ -1,5 +1,5 @@
 // Real email service with Gmail SMTP
-const nodemailer = require('nodemailer');
+import { createTransport, createTestAccount, getTestMessageUrl } from 'nodemailer';
 require('dotenv').config();
 
 // Create email transporter with fallback
@@ -7,7 +7,7 @@ const createTransporter = async () => {
     // Try Gmail first
     if (process.env.EMAIL_PASS && process.env.EMAIL_PASS !== '"#Rachael"' && process.env.EMAIL_PASS.length >= 16) {
         console.log('📧 Using Gmail SMTP...');
-        return nodemailer.createTransport({
+        return createTransport({
             host: process.env.EMAIL_HOST,
             service: 'gmail',
             secure: false,
@@ -20,10 +20,10 @@ const createTransporter = async () => {
         // Use Ethereal Email for testing (creates temporary test accounts)
         console.log('⚠️  Gmail not properly configured. Using test email service...');
         try {
-            const testAccount = await nodemailer.createTestAccount();
+            const testAccount = await createTestAccount();
             console.log('✅ Test email account created:', testAccount.user);
 
-            return nodemailer.createTransport({
+            return createTransport({
                 host: process.env.EMAIL_HOST,
                 port: 587,
                 secure: false,
@@ -92,7 +92,7 @@ const sendVerificationEmail = async (email, verificationToken, fullname) => {
 
         // If using test email service, show preview URL
         if (result.messageId && result.messageId.includes('@ethereal.email')) {
-            const previewUrl = nodemailer.getTestMessageUrl(result);
+            const previewUrl = getTestMessageUrl(result);
             console.log('📧 Preview email at:', previewUrl);
         }
 
@@ -159,7 +159,7 @@ const sendWelcomeEmail = async (email, fullname) => {
     }
 };
 
-module.exports = {
+export default {
     sendVerificationEmail,
     sendWelcomeEmail
 };

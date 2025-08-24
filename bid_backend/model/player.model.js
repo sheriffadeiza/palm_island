@@ -1,6 +1,6 @@
-const mongoose = require("mongoose");
+import { Schema, model } from "mongoose";
 
-const PlayerSchema = mongoose.Schema({
+const PlayerSchema = Schema({
     fullname: {
         type: String,
         required: true,
@@ -73,7 +73,7 @@ const PlayerSchema = mongoose.Schema({
         default: true
     },
     coachId: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: 'Users',
         required: true
     },
@@ -85,4 +85,6 @@ const PlayerSchema = mongoose.Schema({
     timestamps: true
 });
 
-module.exports.Player = mongoose.model("Players", PlayerSchema);
+ export const Player = model("Players", PlayerSchema);
+
+ 
