@@ -107,7 +107,7 @@ const sendVerificationEmail = async (email, verificationToken, fullname) => {
 // Send welcome email after verification
 const sendWelcomeEmail = async (email, fullname) => {
     try {
-        const transporter = createTransporter();
+        const transporter = await createTransporter();
 
         const mailOptions = {
             from: `"Palm Island Football Academy" <${process.env.EMAIL_USER}>`,
