@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "test-email": "node test-email.js"
+    "test-email": "node test-email.js",
+    "type": "module"
   },
   "dependencies": {
     "bcryptjs": "^3.0.2",

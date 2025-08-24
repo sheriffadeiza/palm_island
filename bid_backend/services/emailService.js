@@ -1,6 +1,9 @@
 // Real email service with Gmail SMTP
 import { createTransport, createTestAccount, getTestMessageUrl } from 'nodemailer';
-require('dotenv').config();
+const dotenv = require('dotenv');
+
+
+dotenv.config();
 
 // Create email transporter with fallback
 const createTransporter = async () => {
