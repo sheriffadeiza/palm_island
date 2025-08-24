@@ -68,7 +68,7 @@ const app = express();
 
 
 app.use(cors({
-  origin: ["http://localhost:5173", "https://project-kt2ijrzcf-sheriffadeizas-projects.vercel.app"], // frontend URLs
+  origin: ["http://localhost:5173", "https://project-neon-rho.vercel.app"], // frontend URLs
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));
