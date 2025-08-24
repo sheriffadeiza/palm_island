@@ -3,11 +3,12 @@
   "version": "1.0.0",
   "description": "Backend API for bidding platform with email verification",
   "main": "index.js",
+   "type": "module",
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
     "test-email": "node test-email.js",
-    "type": "module"
+    
   },
   "dependencies": {
     "bcryptjs": "^3.0.2",
