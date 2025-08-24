@@ -66,7 +66,7 @@ const connectDB = async () => {
 
 const app = express();
 app.use(cors({
-  origin: ['https://project-neon-rho.vercel.app/', 'http://localhost:3000'], // add your deployed frontend URL here
+  origin: ['https://project-neon-rho.vercel.app', 'http://localhost:3000'], // add your deployed frontend URL here
   credentials: true
 }));
 app.use(express.json());
