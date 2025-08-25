@@ -68,12 +68,13 @@ const app = express();
 
 
 app.use(cors({
-  origin: ["https://project-neon-rho.vercel.app", "http://localhost:5173" ], // frontend URLs
+  origin: [process.env.FRONTEND_URL, "http://localhost:5173"],
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));
 
-app.use(json(""));
+app.use(json());
+
 
 // Registration endpoint
 app.post('/register', async (req, res) => {
