@@ -4,7 +4,7 @@ import { config } from 'dotenv';
 import { Schema, model, connect } from 'mongoose';
 import { hash, compare } from 'bcryptjs';
 import { randomBytes } from 'crypto';
-import sendWelcomeEmail from './services/emailService';
+import sendWelcomeEmail from './services/emailService.js';
 
 
 
