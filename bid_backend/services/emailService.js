@@ -1,6 +1,6 @@
 // Real email service with Gmail SMTP
 import { createTransport, createTestAccount, getTestMessageUrl } from 'nodemailer';
-const dotenv = require('dotenv');
+import dotenv from 'dotenv';
 
 
 dotenv.config();

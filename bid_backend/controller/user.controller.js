@@ -1,9 +1,12 @@
-const { User } = require("../model/user.model")
-const { sendVerificationEmail, sendWelcomeEmail } = require("../services/emailService").default
-const crypto = require('crypto')
-const bcrypt = require('bcryptjs')
+import { User } from "../model/user.model.js";
+import emailService from "../services/emailService.js";
+import crypto from "crypto";
+import bcrypt from "bcryptjs";
 
-module.exports.registerUser = async(req, res)=>{
+
+const { sendVerificationEmail, sendWelcomeEmail } = emailService
+
+export const registerUser = async (req, res) =>{
 
     const {fullname, email, password, role} = req.body
 
@@ -59,7 +62,7 @@ module.exports.registerUser = async(req, res)=>{
                 userId: newUser._id
             })
         }
-
+ 
     } catch (error) {
         console.error('Registration error:', error)
         res.status(500).json({message: error.message ?? "Something went wrong"})
@@ -67,7 +70,8 @@ module.exports.registerUser = async(req, res)=>{
 
 }
 
-module.exports.verifyEmail = async(req, res) => {
+     export const verifyEmail = async (req, res) => {
+    
     try {
         const { token } = req.query
 
@@ -105,7 +109,7 @@ module.exports.verifyEmail = async(req, res) => {
     }
 }
 
-module.exports.resendVerificationEmail = async(req, res) => {
+    export const resendVerificationEmail = async(req, res) => {
     try {
         const { email } = req.body
 
@@ -152,7 +156,7 @@ module.exports.resendVerificationEmail = async(req, res) => {
     }
 }
 
-module.exports.loginUser = async(req, res) => {
+export const loginUser = async(req, res) => {
     try {
         const { email, password } = req.body
 
