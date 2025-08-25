@@ -108,7 +108,7 @@ const sendVerificationEmail = async (email, verificationToken, fullname) => {
 };
 
 // Send welcome email after verification
-const sendWelcomeEmail = async (email, fullname) => {
+export const sendWelcomeEmail = async (email, fullname) => {
     try {
         const transporter = await createTransporter();
 
