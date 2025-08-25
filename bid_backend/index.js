@@ -4,7 +4,9 @@ import { config } from 'dotenv';
 import { Schema, model, connect } from 'mongoose';
 import { hash, compare } from 'bcryptjs';
 import { randomBytes } from 'crypto';
-import { sendWelcomeEmail } from './services/emailService.js';
+import emailService from './services/emailService';
+
+
 
 
 config();
@@ -117,7 +119,8 @@ app.post('/register', async (req, res) => {
         console.log('✅ User created:', newUser._id);
 
         // Send welcome email (no verification needed)
-        const emailResult = await sendWelcomeEmail(email, fullname);
+        const emailResult = await emailService.sendWelcomeEmail(email, fullname);
+
 
         if (emailResult.success) {
             console.log('✅ Welcome email sent successfully');
